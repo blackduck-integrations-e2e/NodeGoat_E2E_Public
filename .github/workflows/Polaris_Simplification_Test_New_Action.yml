@@ -1,0 +1,115 @@
+name: Polaris Simplification Test New Action
+on:
+  push:
+    branches: [ main, master, develop, stage, release ]
+  pull_request:
+    branches: [ main, master, develop, stage, release ]  
+  workflow_dispatch:  
+jobs:
+  build:
+    
+    runs-on: [ mac-sh-org ]
+    #runs-on: [  windows-sh ]
+    #runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        
+      - name: Polaris Scan
+        uses: blackduck-inc/black-duck-security-scan@v2
+        #uses: blackduck-inc/black-duck-security-scan@main
+        #continue-on-error: false
+        with:
+        
+          bridgecli_download_url: "https://artifactory.tools.duckutil.net/artifactory/clops-local/integrations/bridge/binaries/bridge-cli-bundle/3.9.2rc1/bridge-cli-bundle-3.9.2rc1-macos_arm.zip"
+          #bridge_download_version: 1.1.0
+          #polaris_server_url: ${{ secrets.POLARIS_CDEV_URL }}
+          #polaris_access_token: ${{ secrets.POLARIS_CDEV_TOKEN }}
+          #polaris_server_url: ${{ secrets.POLARIS_URL_STG }}
+          #polaris_access_token: ${{ secrets.POLARIS_TOKEN_STG }}
+          polaris_server_url: ${{ secrets.POLARIS_POC_URL }}
+          polaris_access_token: ${{ secrets.POLARIS_POC_TOKEN }}
+          #polaris_access_token: ${{ secrets.POLARIS_POC_CONCURRENT_TOKEN }} 
+          #polaris_application_name: "Node_Goat_Source_Archive_Oct21"
+          #polaris_project_name: "Node_Goat_Source_Archive_Oct21"
+          # polaris_application_name: "Sast_Remote_Sca_Remote_Archive"
+          # polaris_project_name: "Sast_Remote_Sca_Remote_Archive"
+
+          #polaris_application_name: "Node_Goat_Triage_Test"
+          #polaris_project_name: "Node_Goat_Triage_Test"
+          
+          #polaris_application_name: "Node_Goat_Sast_Sca_July2"
+          #polaris_project_name: "Node_Goat_Sast_Sca_July2"
+          ### Accepts Multiple Values
+          polaris_assessment_types: "SAST,SCA"
+          ### Uncomment below configuration if Synopsys Bridge diagnostic files needs to be uploaded
+          #include_diagnostics: true
+          #polaris_triage: NOT_ENTITLED
+          #polaris_branch_name: "github-actions"
+          
+          ### PULL REQUEST COMMENTS: Uncomment below to enable
+          polaris_prComment_enabled: true
+          polaris_prComment_severities: "Critical,High"
+          github_token: ${{ secrets.GIT_PAT_TOKEN }} # Required when PR comments is enabled
+          
+          ### SARIF report parameters
+          polaris_reports_sarif_create: true
+          # polaris_reports_sarif_groupSCAIssues: false
+          # polaris_reports_sarif_file_path: "/Users/madhusud/Github_Repos/Custom_Sarif_Path/Polaris_SAST_SCA_Critical_High_Low_Sarif_Report_Demo.json"
+          # polaris_reports_sarif_severities: 'critical,high,low'
+          # polaris_reports_sarif_issue_types : 'SAST,SCA'
+          polaris_upload_sarif_report: true
+
+          ### Source Upload
+          #project_directory: "/Users/madhusud/Repos/NodeGoat"
+          #project_directory: "C:\\Users\\madhusud\\e2e_testing\\repos\\NodeGoat"
+          ### Uncomment below configuration for source code upload 
+          #polaris_assessment_mode: "SOURCE_UPLOAD"
+          #polaris_assessment_mode: "CI"
+          #project_source_archive: "/Users/madhusud/Repos/NodeGoat.zip"
+          #project_source_archive: "C:\\Users\\madhusud\\e2e_testing\\repos\\resources\\NodeGoat-master.zip"
+          #project_source_excludes: "artifacts,config,test,*.md,*.yml"
+          #PROJECT_SOURCE_PRESERVESYMLINKS: false
+          #project_source_preservesymlinks: false
+         
+          #project_source_excludes: "artifacts,config,test,*.md,*.yml"
+          #PROJECT_SOURCE_PRESERVESYMLINKS: false
+          #project_source_preservesymlinks: false
+
+          # Coverity Arbitrary Params
+          #coverity_build_command: "npm install"
+          #coverity_clean_command: "npm cache clean --force"
+
+          # Blackduck Arbitrary Params
+          #detect_search_depth: 3
+          #detect_args: '--detect.diagnostic=true'
+          #detect_config_path: '/Users/madhusud/Github_Repos/Config_Files/application.properties'
+          #blackduck_args: '--spring.config.location=/Users/madhusud/Github_Repos/Config_Path/blackduck.properties'
+          
+          # Coverity Arbitrary Parameters
+          #coverity_build_command: npm install
+          #coverity_clean_command: npm cache clean --force
+          #coverity_config_path: /Users/madhusud/Github_Runners/Coverity_Yaml_Files/coverity.yml
+          #coverity_args: -c /Users/madhusud/Github_Runners/Coverity_Yaml_Files/coverity.yml
+          #coverity_args: --config-override capture.build.build-command="npm install"
+          
+          # Signature Scanning
+          #polaris_test_sca_type: SCA-SIGNATURE
+          #polaris_test_sca_type: SCA-PACKAGE
+
+          #include_diagnostics: true
+          ## Async Mode
+          #polaris_waitForScan: false
+          mark_build_status: success
+
+          ## Rapid Scans
+          #polaris_test_sast_type: 'SAST_RAPID'
+          #polaris_test_sast_type: 'SAST_FULL'
+
+          ### New Resources
+          #polaris_test_sast_location: 'remote'
+          #polaris_test_sca_location: 'remote'
+
+          #detect_install_directory: 'C:\Users\MaksudUrRahman\Downloads\M\blackduck-install-directory'
+          #coverity_install_directory: 'C:\Users\MaksudUrRahman\Downloads\M\coverity-local'
+          #bridgecli_install_directory: 'C:\Users\MaksudUrRahman\Downloads\M\bridge-cli-install-directory'
