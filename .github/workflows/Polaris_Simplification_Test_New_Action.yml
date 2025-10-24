@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     
-    runs-on: [ mac-sh-org ]
+    runs-on: [ mac-sh-p ]
     #runs-on: [  windows-sh ]
     #runs-on: [ ubuntu-latest ]
     steps:
